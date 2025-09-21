@@ -31,7 +31,7 @@ fi
 
 if [[ ! -e $pkgbuild_dir/.SRCINFO ]]; then
     echo "$pkgbuild_dir does not contain a .SRCINFO file."
-    exit 1
+    # exit 1
 fi
 
 getfacl -p -R "$pkgbuild_dir" /github/home > /tmp/arch-pkgbuild-builder-permissions.bak
@@ -45,9 +45,14 @@ sudo chown -R app /github/home
 
 # use more reliable keyserver
 mkdir -p /github/home/.gnupg/
-echo "keyserver hkp://keyserver.ubuntu.com:80" | tee /github/home/.gnupg/gpg.conf
+( echo "keyserver hkp://keyserver.ubuntu.com:80" | tee /github/home/.gnupg/gpg.conf ) &>/dev/null
 
 cd "$pkgbuild_dir"
+
+if [[ ! -f .SRCINFO ]]; then
+    # Generate .SRCINFO
+    makepkg --printsrcinfo >.SRCINFO
+fi
 
 pkgname=$(grep -E 'pkgname' .SRCINFO | sed -e 's/.*= //')
 
