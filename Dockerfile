@@ -6,4 +6,6 @@ ARG BUILDPLATFOR
 
 COPY entrypoint.sh /entrypoint.sh
 
+RUN sudo chmod 0755 /entrypoint.sh
+
 ENTRYPOINT ["/entrypoint.sh"]
