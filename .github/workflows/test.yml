@@ -1,0 +1,69 @@
+name: PKGBUILD Test CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/test.yml'
+      - 'action.yml'
+      - 'entrypoint.sh'
+  pull_request:
+    paths:
+      - '.github/workflows/test.yml'
+      - 'action.yml'
+      - 'entrypoint.sh'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test on project
+
+    strategy:
+      matrix:
+        include:
+          - pkg-name: zig-bin
+          - pkg-name: x265-git
+          - pkg-name: x265-pmod-git
+          - pkg-name: aom-psy101-git
+      fail-fast: false
+
+    steps:
+
+      - name: Wait for base rebuild
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          echo "Waiting for the Base Dockerfile to finish building"
+          for i in {1..8}; do
+            sleep 2s && echo "..."
+          done
+
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          path: action
+
+      - uses: actions/checkout@v5
+        with:
+          repository: rokibhasansagar/Arch_PKGBUILDs
+          ref: main
+          path: Arch_PKGBUILDs
+
+      - name: pkgbuild
+        uses: ./action
+        with:
+          target: pkgbuild
+          debug: true
+          pkgname: Arch_PKGBUILDs/${{ matrix.pkg-name }}
+
+      - name: srcinfo
+        continue-on-error: true
+        uses: ./action
+        with:
+          target: srcinfo
+          pkgname: Arch_PKGBUILDs/${{ matrix.pkg-name }}
+
