@@ -21,7 +21,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test on project
+    name: Test Builds
 
     strategy:
       matrix:
@@ -30,6 +30,8 @@ jobs:
           - pkg-name: x265-git
           - pkg-name: x265-pmod-git
           - pkg-name: aom-psy101-git
+          - pkg-name: aom-git
+          - pkg-name: llvm-bolt
       fail-fast: false
 
     steps:
@@ -42,16 +44,23 @@ jobs:
             sleep 2s && echo "..."
           done
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: main
           path: action
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           repository: rokibhasansagar/Arch_PKGBUILDs
           ref: main
           path: Arch_PKGBUILDs
+
+      - name: aom-git preparation
+        if: ${{ matrix.pkg-name == 'aom-git' }}
+        run: |
+          cd Arch_PKGBUILDs/TEST/
+          mv aom* ../
+          cd ..
 
       - name: pkgbuild
         uses: ./action
