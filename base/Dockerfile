@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1-labs
-FROM --platform=$BUILDPLATFORM fr3akyphantom/vapoursynth-av1an-base:latest
+FROM --platform=$BUILDPLATFORM fr3akyphantom/archy-base:latest
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
