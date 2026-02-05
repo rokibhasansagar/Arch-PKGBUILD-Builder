@@ -28,9 +28,11 @@ jobs:
         include:
           - pkg-name: zig-bin
           - pkg-name: x265-git
+            run: 'x265 -V'
           - pkg-name: x265-pmod-git
           - pkg-name: aom-psy101-git
           - pkg-name: aom-git
+            run: 'aomenc --help'
           - pkg-name: llvm-bolt
       fail-fast: false
 
@@ -75,4 +77,13 @@ jobs:
         with:
           target: srcinfo
           pkgname: Arch_PKGBUILDs/${{ matrix.pkg-name }}
+
+      - name: run
+        if: ${{ matrix.run != '' }}
+        continue-on-error: true
+        uses: ./action
+        with:
+          target: run
+          pkgname: Arch_PKGBUILDs/${{ matrix.pkg-name }}
+          command: ${{ matrix.run }}
 
