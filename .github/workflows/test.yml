@@ -34,6 +34,8 @@ jobs:
           - pkg-name: aom-git
             run: 'aomenc --help'
           - pkg-name: llvm-bolt
+          - pkg-name: onnxruntime-cpu
+          - pkg-name: vapoursynth-plugin-mlrt-ort-cpu-runtime-git
       fail-fast: false
 
     steps:
