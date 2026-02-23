@@ -54,7 +54,9 @@ if [[ ! -f .SRCINFO ]]; then
     makepkg --printsrcinfo >.SRCINFO
 fi
 
-pkgname=$(grep -E 'pkgname' .SRCINFO | sed -e 's/.*= //')
+pkgnames=(
+    $(grep -E 'pkgname' .SRCINFO | sed -e 's/.*= //')
+)
 
 install_deps() {
     # install all package dependencies
@@ -78,9 +80,11 @@ case $target in
         # shellcheck disable=SC1091
         source /etc/makepkg.conf # get PKGEXT
 
-        namcap "${pkgname}"-*"${PKGEXT}"
-        pacman -Qip "${pkgname}"-*"${PKGEXT}"
-        pacman -Qlp "${pkgname}"-*"${PKGEXT}"
+        for pkgname in "${pkgnames[@]}"; do
+            namcap "${pkgname}"-*"${PKGEXT}"
+            pacman -Qip "${pkgname}"-*"${PKGEXT}"
+            pacman -Qlp "${pkgname}"-*"${PKGEXT}"
+        done
         ;;
     run)
         install_deps
