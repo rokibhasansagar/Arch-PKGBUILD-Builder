@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "Waiting for the Base Dockerfile to finish building"
           for i in {1..8}; do
-            sleep 2s && echo "..."
+            sleep 5s && echo "..."
           done
 
       - uses: actions/checkout@v6

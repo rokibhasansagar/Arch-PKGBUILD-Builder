@@ -14,7 +14,7 @@ RUN <<-'EOL'
 	( sudo rm -rvf /var/cache/pacman/pkg/*.pkg.tar.zst* 2>/dev/null || true )
 	set -ex
 	export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
-	sudo pacman -S --noconfirm --needed git unzip namcap fakeroot audit grep diffutils
+	sudo pacman -S --noconfirm --needed git unzip namcap fakeroot audit grep diffutils jq base-devel
 	mkdir -p /home/app/.gnupg
 	sudo echo "keyserver hkp://keyserver.ubuntu.com" >/home/app/.gnupg/gpg.conf
 	chmod 700 /home/app/.gnupg

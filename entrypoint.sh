@@ -47,6 +47,9 @@ sudo chown -R app /github/home
 mkdir -p /github/home/.gnupg/
 ( echo "keyserver hkp://keyserver.ubuntu.com:80" | tee /github/home/.gnupg/gpg.conf ) &>/dev/null
 
+# Update System to populate pacman db
+# ( sudo pacman -Sy --noconfirm 2>/dev/null ) || ( sudo pacman -Sy --noconfirm 2>/dev/null || true )
+
 cd "$pkgbuild_dir"
 
 if [[ ! -f .SRCINFO ]]; then
