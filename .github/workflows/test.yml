@@ -7,6 +7,7 @@ on:
       - '.github/workflows/test.yml'
       - 'action.yml'
       - 'entrypoint.sh'
+      - 'base/Dockerfile'
   pull_request:
     paths:
       - '.github/workflows/test.yml'
@@ -51,12 +52,12 @@ jobs:
             sleep 5s && echo "..."
           done
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: main
           path: action
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           repository: rokibhasansagar/Arch_PKGBUILDs
           ref: main
