@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1-labs
-FROM --platform=$BUILDPLATFORM fr3akyphantom/archy-base:latest
+FROM --platform=$BUILDPLATFORM fr3akyphantom/cachy-base:latest
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
@@ -14,6 +14,7 @@ RUN <<-'EOL'
 	( sudo rm -rvf /var/cache/pacman/pkg/*.pkg.tar.zst* 2>/dev/null || true )
 	set -ex
 	export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+        sudo sed -i '/^HoldPkg\s*=/ s/$/ zlib-ng-compat/' /etc/pacman.conf
 	sudo pacman -S --noconfirm --needed git unzip namcap fakeroot audit grep diffutils jq base-devel
 	mkdir -p /home/app/.gnupg
 	sudo echo "keyserver hkp://keyserver.ubuntu.com" >/home/app/.gnupg/gpg.conf
