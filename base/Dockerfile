@@ -21,7 +21,10 @@ RUN <<-'EOL'
 	paru -Ui --noconfirm --needed --skipreview --noprovides --useask --combinedupgrade --batchinstall --noinstalldebug --removemake --nocleanafter --nokeepsrc --mflags="--force" --rebuild
 	cd ..
 	sudo rm -rf ./zlib-ng-compat-git
-	sudo sed -i '/^HoldPkg\s*=/ s/$/ zlib-ng-compat/' /etc/pacman.conf
+	zlibng_ver="1:1.3.2-3.1"
+	# sudo sed -i '/^HoldPkg\s*=/ s/$/ zlib/' /etc/pacman.conf
+	# sudo sed -i '/^#IgnorePkg/c\IgnorePkg = zlib' /etc/pacman.conf
+	sudo sed -i '/^#AssumeInstalled/c\AssumeInstalled = zlib='"${zlibng_ver}"'' /etc/pacman.conf
 	mkdir -p /home/app/.gnupg
 	sudo echo "keyserver hkp://keyserver.ubuntu.com" >/home/app/.gnupg/gpg.conf
 	chmod 700 /home/app/.gnupg

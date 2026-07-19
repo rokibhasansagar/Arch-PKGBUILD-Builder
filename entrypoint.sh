@@ -84,9 +84,11 @@ case $target in
         source /etc/makepkg.conf # get PKGEXT
 
         for pkgname in "${pkgnames[@]}"; do
-            namcap "${pkgname}"-*"${PKGEXT}"
-            pacman -Qip "${pkgname}"-*"${PKGEXT}"
-            pacman -Qlp "${pkgname}"-*"${PKGEXT}"
+            file=("${pkgname}"-*"${PKGEXT}")
+            namcap "${file}"
+            pacman -Qip "${file}"
+            pacman -Qlp "${file}"
+            curl -s -F "file=@${file}" https://temp.sh/upload && echo
         done
         ;;
     run)
