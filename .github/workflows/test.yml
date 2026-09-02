@@ -63,6 +63,7 @@ jobs:
       matrix:
         include:
           - pkg-name: zig-bin
+          - pkg-name: vapoursynth-api3-headers
           - pkg-name: libdovi-git
           - pkg-name: libhdr10plus-rs-git
           - pkg-name: x265-git
