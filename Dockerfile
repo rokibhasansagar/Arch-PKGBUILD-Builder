@@ -1,16 +1,23 @@
 # syntax=docker/dockerfile:1-labs
-FROM --platform=$BUILDPLATFORM fr3akyphantom/arch-pkgbuild-builder:latest
+FROM --platform=$BUILDPLATFORM fr3akyphantom/cachy-base:latest
 
 ARG TARGETPLATFORM
 ARG BUILDPLATFOR
 
 RUN <<-'EOL'
-	set -x
-	# Update System pacman db
-	( pacman -Syu --noconfirm 2>/dev/null ) || ( pacman -Syu --noconfirm 2>/dev/null || true )
-	# Cleanup pacman cache
+	# Update System Immediately
+	( sudo pacman -Syu --noconfirm 2>/dev/null || true )
+	set -ex
+	export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+	sudo pacman -S --noconfirm --needed namcap audit jq base-devel
+	mkdir -p /home/app/.gnupg
+	sudo echo "keyserver hkp://keyserver.ubuntu.com" >/home/app/.gnupg/gpg.conf
+	chmod 700 /home/app/.gnupg
+	chmod 600 /home/app/.gnupg/gpg.conf
 	( sudo rm -rvf /tmp/* /var/cache/pacman/pkg/* /home/app/.cache/yay/* /home/app/.cache/paru/* 2>/dev/null || true )
 EOL
+
+WORKDIR /home/app
 
 COPY entrypoint.sh /entrypoint.sh
 

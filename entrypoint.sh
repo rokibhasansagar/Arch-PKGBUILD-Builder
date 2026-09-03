@@ -52,6 +52,9 @@ mkdir -p /github/home/.gnupg/
 
 cd "$pkgbuild_dir"
 
+# Hide obsolete napcap warning
+sudo sed -i '/DisableSandboxNetwork/d' /etc/pacman.conf
+
 if [[ ! -f .SRCINFO ]]; then
     # Generate .SRCINFO
     makepkg --printsrcinfo >.SRCINFO
@@ -105,4 +108,4 @@ case $target in
       echo "Target should be one of 'pkgbuild', 'srcinfo', 'run'" ;;
 esac
 
-sudo setfacl --restore=/tmp/arch-pkgbuild-builder-permissions.bak
+sudo setfacl --restore=/tmp/arch-pkgbuild-builder-permissions.bak 2>/dev/null
