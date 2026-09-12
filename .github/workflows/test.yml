@@ -29,6 +29,8 @@ jobs:
     strategy:
       matrix:
         include:
+          - pkg-name: av1an-git
+            run: 'av1an --version'
           - pkg-name: zig-bin
           - pkg-name: vapoursynth-api3-headers
           - pkg-name: libdovi-git
